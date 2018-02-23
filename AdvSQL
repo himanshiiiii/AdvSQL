@@ -38,19 +38,18 @@ To run the function :  SELECT calc_sal()  ;
                                      updated_by varchar (20) ,
                                     changed_salary bigint(1),
                                     updated_date date );
-   
-     DROP trigger  trig;
+  
      
-    DELIMITER //
+
 
      CREATE trigger new_trig
      AFTER UPDATE  ON emp
      FOR EACH ROW
   BEGIN
-    insert into transac values(NEW.ename ,'payal', NEW.sal,now()) ;
+    insert into transac values(NEW.ename ,'himanshi', NEW.sal,now()) ;
      END;
      //
-      Delimiter ;
+     
 
 
 To run the trigger :
