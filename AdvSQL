@@ -1,0 +1,63 @@
+ADVANCE SQL AND JDBC
+
+Exercises:
+
+1. SELECT  empno , ename ,right(ename,1) FROM emp where ename LIKE ‘%n’;
+ 
+2.
+       DELIMITER //
+        CREATE PROCEDURE  `update_sal`(IN amount decimal(7,2)) 
+        BEGIN
+         UPDATE emp SET sal = sal+amount where deptno = ( SELECT deptno FROM dept WHERE dname = “SALES”) ;
+         END ;
+          //
+          DELIMITER ;
+
+     To call a procedure :
+     call update_sal(100);
+   
+
+3.
+      DELIMITER //
+     CREATE FUNCTION calc_sal () RETURNS int
+     BEGIN
+    
+   DECLARE total INT(4) DEFAULT 0;
+
+   SELECT sum(e.sal) INTO total from emp e INNER JOIN dept d  ON  e.deptno=d.deptno WHERE d.dname =‘ACCOUNTING’;
+
+  RETURN  total;
+  END ;
+  //
+To run the function :  SELECT calc_sal()  ;
+
+4.
+
+       CREATE TABLE  transac (
+                                    employee_name varchar (15), 
+                                     updated_by varchar (20) ,
+                                    changed_salary bigint(1),
+                                    updated_date date );
+   
+     DROP trigger  trig;
+     
+    DELIMITER //
+
+     CREATE trigger new_trig
+     AFTER UPDATE  ON emp
+     FOR EACH ROW
+  BEGIN
+    insert into transac values(NEW.ename ,'payal', NEW.sal,now()) ;
+     END;
+     //
+      Delimiter ;
+
+
+To run the trigger :
+
+UPDATE emp
+SET sal = sal-100;
+ 
+To view the changes:
+
+SELECT * FROM transac ;
